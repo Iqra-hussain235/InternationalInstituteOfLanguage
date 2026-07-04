@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --brand-red: #ff2f56;
+  --brand-blue: #0f4c81;
+  --brand-white: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 22%), radial-gradient(circle at bottom right, rgba(15, 76, 129, 0.24), transparent 28%), var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(255, 47, 86, 0.45);
+  color: white;
+}
+
+@layer utilities {
+  .btn-glow {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold text-white shadow-lg transition duration-300;
+    background: linear-gradient(135deg, var(--brand-red), var(--brand-blue));
+    box-shadow: 0 0 30px rgba(255, 47, 86, 0.28), 0 0 50px rgba(15, 76, 129, 0.24);
+  }
+
+  .hero-card {
+    @apply rounded-[36px] border border-white/15 bg-white/10 p-4 shadow-2xl shadow-slate-950/30 backdrop-blur-xl;
+  }
+
+  .animate-logo-zoom {
+    animation: logoZoom 5s ease-in-out infinite;
+  }
+
+  .animate-plane {
+    animation: planeFly 8s linear infinite;
+  }
+}
+
+@keyframes logoZoom {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes planeFly {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(220px) translateY(-4px) rotate(15deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(440px) translateY(-8px) rotate(25deg);
+    opacity: 0;
+  }
+}

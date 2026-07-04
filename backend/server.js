@@ -20,7 +20,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/academy", academyRoutes);
-app.use("/api/visa/enquiry", visaEnquiryRoutes);
+// app.use("/api/visa/enquiry", visaEnquiryRoutes);
 
 
 app.get("/", (req, res) => {
