@@ -11,6 +11,7 @@ import {
   Sparkles, Target, Image as ImageIcon, ChevronLeft, ChevronRight,
   Send, FileText
 } from "lucide-react";
+import { submitVisaEnquiry } from "@/services/visaEnquiry";
 
 /* ─── Social SVG Icons ─── */
 const WhatsAppIcon = ({ size = 16 }) => (
@@ -213,12 +214,8 @@ export default function StudyVisaPage() {
           visaType: "Study Visa",
           page: "Study Visa Main",
         };
-        const res = await fetch("/api/enquiry", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error("Failed to submit");
+        const res = await submitVisaEnquiry(payload);
+        if (!res.ok) throw new Error(res.message || "Failed to submit");
         setShowPopup(true);
         setFormData({ name: "", email: "", phone: "", country: "", message: "" });
         setFormErrors({});

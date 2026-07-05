@@ -1,10 +1,9 @@
-// import express from "express";
-// // import { createContact, getContacts } from "../controllers/contactController.js";
-// import { protect } from "../middleware/authMiddleware.js";
+import express from "express";
+import { createVisaEnquiry, getVisaEnquiries } from "../controllers/visaController.js";
 
-// const router = express.Router();
+const router = express.Router();
 
-// // router.post("/", );
-// router.get("/", protect, getVisaEnquiries);
+router.post("/", createVisaEnquiry);
+router.get("/", getVisaEnquiries);
 
-// export default router;
+export default router;

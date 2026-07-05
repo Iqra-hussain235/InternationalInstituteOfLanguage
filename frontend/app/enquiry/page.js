@@ -52,6 +52,9 @@ function EnquiryForm() {
     phone: "",
     course: prefillCourse,
   });
+  const [selectedCourses, setSelectedCourses] = useState(
+    hasServiceParams ? [prefillCourse] : []
+  );
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [success, setSuccess] = useState(false);
@@ -59,11 +62,24 @@ function EnquiryForm() {
   useEffect(() => {
     if (hasServiceParams) {
       setForm((prev) => ({ ...prev, course: prefillCourse }));
+      setSelectedCourses([prefillCourse]);
+    } else {
+      setSelectedCourses([]);
+      setForm((prev) => ({ ...prev, course: "" }));
     }
   }, [hasServiceParams, prefillCourse]);
 
   const handleChange = (field) => (event) => {
     setForm({ ...form, [field]: event.target.value });
+  };
+
+  const handleCourseToggle = (course) => {
+    setSelectedCourses((prev) => {
+      if (prev.includes(course)) {
+        return prev.filter((item) => item !== course);
+      }
+      return [...prev, course];
+    });
   };
 
   const getRedirectUrl = () => {
@@ -82,12 +98,23 @@ function EnquiryForm() {
     setLoading(true);
     setFeedback("");
 
+    const resolvedCourses = hasServiceParams
+      ? [prefillCourse]
+      : selectedCourses.filter(Boolean);
+
+    if (!resolvedCourses.length) {
+      setFeedback("Please select at least one course interest.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(`${API_BASE}/contact`, {
         name: form.name,
         email: form.email,
         phone: form.phone,
-        course: form.course,
+        course: resolvedCourses.join(", "),
+        courses: resolvedCourses,
         service: serviceParam || undefined,
         level: levelParam || undefined,
         category: categoryParam || undefined,
@@ -202,7 +229,7 @@ function EnquiryForm() {
 
                 <div>
                   <label className="mb-1 block text-sm font-medium text-slate-200">
-                    Course Interest
+                    Course Interest {hasServiceParams ? "" : "(Select one or more)"}
                   </label>
                   {hasServiceParams ? (
                     <input
@@ -212,18 +239,30 @@ function EnquiryForm() {
                       className="w-full cursor-default rounded-3xl border border-white/10 bg-slate-800/80 px-4 py-3 text-slate-200 outline-none"
                     />
                   ) : (
-                    <select
-                      value={form.course}
-                      onChange={handleChange("course")}
-                      disabled={success}
-                      className="w-full appearance-none rounded-3xl border border-white/10 bg-slate-950/90 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6%209L12%2015L18%209%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_1rem_center] bg-no-repeat px-4 py-3 text-white outline-none transition focus:border-blue-400 disabled:opacity-60"
-                    >
-                      {COURSE_OPTIONS.map((course) => (
-                        <option key={course} value={course}>
-                          {course}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {COURSE_OPTIONS.map((course) => {
+                        const isChecked = selectedCourses.includes(course);
+                        return (
+                          <label
+                            key={course}
+                            className={`flex cursor-pointer items-center gap-3 rounded-2xl border px-3 py-2 text-sm transition ${
+                              isChecked
+                                ? "border-blue-500/50 bg-blue-600/10 text-blue-200"
+                                : "border-white/10 bg-slate-950/70 text-slate-200"
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => handleCourseToggle(course)}
+                              disabled={success}
+                              className="h-4 w-4 rounded border-white/20 bg-transparent text-blue-500 focus:ring-blue-400"
+                            />
+                            <span>{course}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
                   )}
                 </div>
 
@@ -231,7 +270,7 @@ function EnquiryForm() {
                   <button
                     type="submit"
                     className="w-full rounded-3xl border bg-blue-600 px-5 py-3.5 text-base font-semibold text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] transition hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:cursor-not-allowed disabled:opacity-60"
-                    disabled={loading || success || !form.name || !form.phone}
+                    disabled={loading || success || !form.name || !form.phone || (!hasServiceParams && selectedCourses.length === 0)}
                   >
                     {loading
                       ? "Submitting..."

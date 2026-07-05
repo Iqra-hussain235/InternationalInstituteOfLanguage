@@ -7,6 +7,8 @@ import authRoutes from "./routes/authRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import academyRoutes from "./routes/academyRoutes.js";
+import visaEnquiryRoutes from "./routes/visaEnquiryRoutes.js";
+import { createVisaEnquiry, getVisaEnquiries } from "./controllers/visaController.js";
 
 dotenv.config();
 connectDB();
@@ -20,7 +22,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/academy", academyRoutes);
-// app.use("/api/visa/enquiry", visaEnquiryRoutes);
+app.use("/api/visa", visaEnquiryRoutes);
+app.post("/api/enquiry", createVisaEnquiry);
+app.get("/api/enquiry", getVisaEnquiries);
 
 
 app.get("/", (req, res) => {

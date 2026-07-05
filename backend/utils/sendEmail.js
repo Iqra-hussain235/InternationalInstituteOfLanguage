@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendEnquiryEmail = async (enquiryData, isAcademy = false) => {
   try {
-    const toEmail = "iqratechnicl@gmail.com"; 
+    const toEmail = process.env.EMAIL_TO || process.env.EMAIL_USER || "iqratechnicl@gmail.com";
 
     let subject = "";
     let htmlContent = "";
@@ -67,6 +67,41 @@ export const sendEnquiryEmail = async (enquiryData, isAcademy = false) => {
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
+    return false;
+  }
+};
+
+export const sendVisaEnquiryEmail = async (enquiryData) => {
+  try {
+    const toEmail = process.env.EMAIL_TO || process.env.EMAIL_USER || "iqratechnicl@gmail.com";
+    const subject = `New Visa Enquiry - ${enquiryData.visaType || "Visa"}`;
+    const htmlContent = `
+      <h2>New Visa Enquiry</h2>
+      <p>You have received a new visa enquiry. Details are below:</p>
+      <table border="1" cellpadding="10" style="border-collapse: collapse;">
+        <tr><td><strong>Visa Type</strong></td><td>${enquiryData.visaType || "Not Provided"}</td></tr>
+        <tr><td><strong>Country</strong></td><td>${enquiryData.country || "Not Provided"}</td></tr>
+        <tr><td><strong>Full Name</strong></td><td>${enquiryData.fullName || "Not Provided"}</td></tr>
+        <tr><td><strong>Email</strong></td><td>${enquiryData.email || "Not Provided"}</td></tr>
+        <tr><td><strong>Phone</strong></td><td>${enquiryData.phone || "Not Provided"}</td></tr>
+        <tr><td><strong>Preferred Country</strong></td><td>${enquiryData.preferredCountry || "Not Provided"}</td></tr>
+        <tr><td><strong>Message</strong></td><td>${enquiryData.message || "Not Provided"}</td></tr>
+        <tr><td><strong>Submission Time</strong></td><td>${new Date(enquiryData.submittedAt || enquiryData.createdAt || Date.now()).toLocaleString()}</td></tr>
+      </table>
+    `;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: toEmail,
+      subject,
+      html: htmlContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Visa email sent successfully: " + info.response);
+    return true;
+  } catch (error) {
+    console.error("Error sending visa enquiry email:", error);
     return false;
   }
 };
