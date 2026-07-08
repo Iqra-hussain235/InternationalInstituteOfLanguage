@@ -96,7 +96,7 @@ export default function Navbar() {
               />
             </div>
             <div className="min-w-0 leading-tight">
-              <p className="truncate text-[10px] uppercase tracking-[0.3em] text-slate-200/80 sm:text-[11px] sm:tracking-[0.35em]">
+              <p className="truncate text-base font-extrabold text-white sm:text-xl">
                 International Institute
               </p>
               <p className="truncate text-base font-extrabold text-white sm:text-xl">

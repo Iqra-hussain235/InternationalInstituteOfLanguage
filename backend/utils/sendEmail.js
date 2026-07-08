@@ -15,6 +15,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
 export const sendEnquiryEmail = async (enquiryData, isAcademy = false) => {
   try {
     const toEmail = process.env.EMAIL_TO || process.env.EMAIL_USER || "iqratechnicl@gmail.com";
@@ -74,25 +82,28 @@ export const sendEnquiryEmail = async (enquiryData, isAcademy = false) => {
 export const sendVisaEnquiryEmail = async (enquiryData) => {
   try {
     const toEmail = process.env.EMAIL_TO || process.env.EMAIL_USER || "iqratechnicl@gmail.com";
+    const field = (value) => escapeHtml(value || "Not Provided");
     const subject = `New Visa Enquiry - ${enquiryData.visaType || "Visa"}`;
     const htmlContent = `
       <h2>New Visa Enquiry</h2>
       <p>You have received a new visa enquiry. Details are below:</p>
       <table border="1" cellpadding="10" style="border-collapse: collapse;">
-        <tr><td><strong>Visa Type</strong></td><td>${enquiryData.visaType || "Not Provided"}</td></tr>
-        <tr><td><strong>Country</strong></td><td>${enquiryData.country || "Not Provided"}</td></tr>
-        <tr><td><strong>Full Name</strong></td><td>${enquiryData.fullName || "Not Provided"}</td></tr>
-        <tr><td><strong>Email</strong></td><td>${enquiryData.email || "Not Provided"}</td></tr>
-        <tr><td><strong>Phone</strong></td><td>${enquiryData.phone || "Not Provided"}</td></tr>
-        <tr><td><strong>Preferred Country</strong></td><td>${enquiryData.preferredCountry || "Not Provided"}</td></tr>
-        <tr><td><strong>Message</strong></td><td>${enquiryData.message || "Not Provided"}</td></tr>
-        <tr><td><strong>Submission Time</strong></td><td>${new Date(enquiryData.submittedAt || enquiryData.createdAt || Date.now()).toLocaleString()}</td></tr>
+        <tr><td><strong>Visa Type</strong></td><td>${field(enquiryData.visaType)}</td></tr>
+        <tr><td><strong>Full Name</strong></td><td>${field(enquiryData.fullName)}</td></tr>
+        <tr><td><strong>Email</strong></td><td>${field(enquiryData.email)}</td></tr>
+        <tr><td><strong>Phone</strong></td><td>${field(enquiryData.phone)}</td></tr>
+        <tr><td><strong>Preferred Country</strong></td><td>${field(enquiryData.preferredCountry || enquiryData.country)}</td></tr>
+        <tr><td><strong>Planned Travel Date</strong></td><td>${field(enquiryData.travelDate)}</td></tr>
+        <tr><td><strong>Message</strong></td><td>${field(enquiryData.message)}</td></tr>
+        <tr><td><strong>Source Page</strong></td><td>${field(enquiryData.page)}</td></tr>
+        <tr><td><strong>Submission Time</strong></td><td>${escapeHtml(new Date(enquiryData.submittedAt || enquiryData.createdAt || Date.now()).toLocaleString())}</td></tr>
       </table>
     `;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: toEmail,
+      replyTo: enquiryData.email,
       subject,
       html: htmlContent,
     };

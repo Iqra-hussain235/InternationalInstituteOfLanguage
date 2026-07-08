@@ -1,4 +1,6 @@
 import Contact from "../models/Contact.js";
+import { sendEnquiryEmail } from "../utils/sendEmail.js";
+import { appendGeneralEnquiryCSV } from "../utils/saveToCSV.js";
 
 export const createContact = async (req, res) => {
   try {
@@ -24,16 +26,17 @@ export const createContact = async (req, res) => {
       courses: normalizedCourses,
     });
 
-    // Try sending email Notification and CSV export
-    import("../utils/sendEmail.js").then(({ sendEnquiryEmail }) => {
-      sendEnquiryEmail(contact, false);
-    });
+    appendGeneralEnquiryCSV(contact);
+    const emailSent = await sendEnquiryEmail(contact, false);
 
-    import("../utils/saveToCSV.js").then(({ appendGeneralEnquiryCSV }) => {
-      appendGeneralEnquiryCSV(contact);
+    res.status(201).json({
+      success: true,
+      message: emailSent
+        ? "Enquiry submitted and email notification sent."
+        : "Enquiry saved, but the email notification could not be sent.",
+      emailSent,
+      data: contact,
     });
-
-    res.status(201).json(contact);
   } catch (error) {
     console.error("Error creating contact:", error);
     res.status(500).json({ message: "Server error. Could not process enquiry." });

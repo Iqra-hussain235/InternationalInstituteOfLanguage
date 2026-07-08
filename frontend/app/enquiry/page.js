@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -8,13 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
-  buildCourseEnquiryUrl,
   getEnquiryDisplayTitle,
   getEnquiryCourseValue,
-  fromQueryService,
 } from "@/utils/serviceEnquiry";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const COURSE_OPTIONS = [
   "IELTS",
@@ -59,16 +55,6 @@ function EnquiryForm() {
   const [feedback, setFeedback] = useState("");
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    if (hasServiceParams) {
-      setForm((prev) => ({ ...prev, course: prefillCourse }));
-      setSelectedCourses([prefillCourse]);
-    } else {
-      setSelectedCourses([]);
-      setForm((prev) => ({ ...prev, course: "" }));
-    }
-  }, [hasServiceParams, prefillCourse]);
-
   const handleChange = (field) => (event) => {
     setForm({ ...form, [field]: event.target.value });
   };
@@ -80,17 +66,6 @@ function EnquiryForm() {
       }
       return [...prev, course];
     });
-  };
-
-  const getRedirectUrl = () => {
-    if (hasServiceParams) {
-      return buildCourseEnquiryUrl({
-        service: fromQueryService(serviceParam) || serviceParam,
-        level: levelParam,
-        category: categoryParam,
-      });
-    }
-    return "/";
   };
 
   const handleSubmit = async (e) => {
@@ -109,7 +84,7 @@ function EnquiryForm() {
     }
 
     try {
-      const response = await axios.post(`${API_BASE}/contact`, {
+      const response = await axios.post("/api/contact", {
         name: form.name,
         email: form.email,
         phone: form.phone,

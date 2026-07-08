@@ -1,4 +1,6 @@
 import AcademyEnquiry from "../models/AcademyEnquiry.js";
+import { sendEnquiryEmail } from "../utils/sendEmail.js";
+import { appendAcademyEnquiryCSV } from "../utils/saveToCSV.js";
 
 // @desc    Create an academy enquiry
 // @route   POST /api/academy/enquiry
@@ -26,16 +28,19 @@ export const createAcademyEnquiry = async (req, res) => {
       phone
     });
 
-    // Send email notification and CSV export
-    import("../utils/sendEmail.js").then(({ sendEnquiryEmail }) => {
-      sendEnquiryEmail(enquiry, true);
-    });
+    // Save the local export and wait for the notification attempt so failures
+    // are visible in the backend logs before the request completes.
+    appendAcademyEnquiryCSV(enquiry);
+    const emailSent = await sendEnquiryEmail(enquiry, true);
 
-    import("../utils/saveToCSV.js").then(({ appendAcademyEnquiryCSV }) => {
-      appendAcademyEnquiryCSV(enquiry);
+    res.status(201).json({
+      success: true,
+      message: emailSent
+        ? "Booking submitted and email notification sent."
+        : "Booking saved, but the email notification could not be sent.",
+      emailSent,
+      data: enquiry,
     });
-
-    res.status(201).json({ success: true, data: enquiry });
   } catch (error) {
     console.error("Error creating academy enquiry:", error);
     res.status(500).json({ message: "Server error. Could not process enquiry." });

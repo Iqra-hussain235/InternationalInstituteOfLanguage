@@ -79,8 +79,7 @@ export default function CourseDetail() {
     setErrorMsg("");
 
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-      const response = await axios.post(`${BASE_URL}/academy/enquiry`, formData);
+      const response = await axios.post("/api/academy/enquiry", formData);
       if (response.data.success) {
         setIsSuccess(true);
         setTimeout(() => {

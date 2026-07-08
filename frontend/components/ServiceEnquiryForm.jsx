@@ -39,7 +39,6 @@ export default function ServiceEnquiryForm({ service, level, category }) {
     setErrorMsg("");
 
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
       const payload = {
         course: courseValue,
         name: formData.name,
@@ -50,7 +49,7 @@ export default function ServiceEnquiryForm({ service, level, category }) {
         category: category || undefined,
       };
 
-      const response = await axios.post(`http://localhost/academy`);
+      const response = await axios.post("/api/academy/enquiry", payload);
       if (response.data.success) {
         
         setIsSuccess(true);

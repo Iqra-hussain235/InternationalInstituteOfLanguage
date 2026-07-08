@@ -202,7 +202,6 @@ function CourseSelectionContent() {
     setErrorMsg("");
 
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
       // Merge selected steps into the payload
       const payload = {
         course: selectedCourse.name,
@@ -216,7 +215,7 @@ function CourseSelectionContent() {
         }
       }
 
-      const response = await axios.post(`${BASE_URL}/academy/enquiry`, payload);
+      const response = await axios.post("/api/academy/enquiry", payload);
       if (response.data.success) {
         setIsSuccess(true);
       }
