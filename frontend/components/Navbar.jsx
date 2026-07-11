@@ -8,7 +8,7 @@ import { FiMenu, FiX, FiChevronDown } from "react-icons/fi";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/about/aboutUs", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/academy/course", label: "Courses" },
   { href: "/events", label: "Event" },
@@ -112,7 +112,11 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`transition hover:text-red-300 ${
-                  pathname === link.href ? "text-red-300" : ""
+                  (link.href.startsWith("/about")
+                    ? pathname.startsWith("/about")
+                    : pathname === link.href)
+                    ? "text-red-300"
+                    : ""
                 }`}
               >
                 {link.label}
@@ -235,7 +239,9 @@ export default function Navbar() {
                       href={link.href}
                       onClick={closeMenu}
                       className={`block rounded-xl px-4 py-3.5 text-base font-semibold transition hover:bg-white/10 ${
-                        pathname === link.href
+                        (link.href.startsWith("/about")
+                          ? pathname.startsWith("/about")
+                          : pathname === link.href)
                           ? "bg-white/10 text-red-300"
                           : "text-white/90"
                       }`}

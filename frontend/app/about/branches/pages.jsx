@@ -1,0 +1,20 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, Clock3, MapPin, Navigation, Phone, Search } from "lucide-react";
+import { useMemo, useState } from "react";
+
+const branches = [
+  { city: "Ludhiana", area: "Model Town", address: "Near the city centre, Model Town", phone: "+91 98765 43210", tag: "Main campus", color: "bg-[#0b4e80]" },
+  { city: "Jalandhar", area: "Urban Estate", address: "A welcoming space in Urban Estate", phone: "+91 98765 43210", tag: "Language hub", color: "bg-[#ff4f6d]" },
+  { city: "Moga", area: "GT Road", address: "Conveniently located on GT Road", phone: "+91 98765 43210", tag: "Student centre", color: "bg-[#0b8393]" },
+];
+
+export default function BranchesPage() {
+  const [query, setQuery] = useState("");
+  const results = useMemo(() => branches.filter((b) => `${b.city} ${b.area}`.toLowerCase().includes(query.toLowerCase())), [query]);
+  return <main className="min-h-screen bg-[#f7f9fc] text-slate-900">
+    <section className="bg-[#071a32] px-6 py-16 sm:px-10 lg:px-16 lg:py-20"><div className="mx-auto max-w-7xl"><Link href="/" className="text-sm font-bold text-cyan-300">← Iqra Institute</Link><div className="mt-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end"><div><p className="font-bold uppercase tracking-[.18em] text-[#ff7189]">Visit us</p><h1 className="mt-3 text-5xl font-black tracking-tight text-white sm:text-6xl">Find your nearest<br />Iqra campus.</h1><p className="mt-5 max-w-lg text-lg text-slate-300">Step into a space made for focused learning, friendly questions, and bigger plans.</p></div><div className="relative w-full max-w-sm"><Search className="absolute left-4 top-4 h-5 w-5 text-slate-400"/><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a city" className="w-full rounded-2xl border border-white/15 bg-white px-12 py-4 font-medium text-slate-800 outline-none ring-[#ff4f6d] focus:ring-2" /></div></div></div></section>
+    <section className="mx-auto max-w-7xl px-6 py-14 sm:px-10 lg:px-16"><div className="mb-8 flex items-center justify-between"><p className="font-bold text-slate-500">{results.length} campuses ready to welcome you</p><Link href="/contact" className="hidden items-center gap-2 font-bold text-[#0b4e80] sm:flex">Need help choosing? <ArrowRight className="h-4 w-4" /></Link></div><div className="grid gap-6 lg:grid-cols-3">{results.map((branch, index) => <article key={branch.city} className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div className={`${branch.color} relative h-32 p-7 text-white`}><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider">{branch.tag}</span><span className="absolute bottom-5 right-6 text-7xl font-black text-white/10">0{index + 1}</span></div><div className="p-7"><h2 className="text-2xl font-black">{branch.city}</h2><p className="mt-1 font-semibold text-[#ff4f6d]">{branch.area}</p><div className="mt-6 space-y-4 text-sm text-slate-600"><p className="flex gap-3"><MapPin className="h-5 w-5 shrink-0 text-[#0b4e80]" />{branch.address}</p><p className="flex gap-3"><Clock3 className="h-5 w-5 shrink-0 text-[#0b4e80]" />Mon–Sat · 9:00 AM–6:00 PM</p><p className="flex gap-3"><Phone className="h-5 w-5 shrink-0 text-[#0b4e80]" />{branch.phone}</p></div><div className="mt-7 flex gap-3"><a href={`tel:${branch.phone.replace(/\s/g, "")}`} className="flex-1 rounded-xl bg-slate-100 px-3 py-3 text-center text-sm font-bold transition hover:bg-slate-200">Call campus</a><a href="https://maps.google.com" target="_blank" rel="noreferrer" className="grid w-12 place-items-center rounded-xl bg-[#0b4e80] text-white transition hover:bg-[#083b61]" aria-label={`Get directions to ${branch.city}`}><Navigation className="h-5 w-5" /></a></div></div></article>)}</div>{!results.length && <div className="rounded-3xl border border-dashed border-slate-300 p-12 text-center text-slate-500">No campus found yet. Try another city, or contact us for help.</div>}</section>
+  </main>;
+}
