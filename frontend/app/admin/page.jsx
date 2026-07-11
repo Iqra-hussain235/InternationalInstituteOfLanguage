@@ -189,13 +189,13 @@ export default function AdminDashboard() {
     if (searchTerm.trim() !== "") {
       const term = searchTerm.toLowerCase().trim();
       result = result.filter((e) =>
-        (e.name && e.name.toLowerCase().includes(term)) ||
-        (e.email && e.email.toLowerCase().includes(term)) ||
-        (e.phone && e.phone.includes(term)) ||
-        (e.country && e.country.toLowerCase().includes(term)) ||
-        (e.visaType && e.visaType.toLowerCase().includes(term)) ||
-        (e.purpose && e.purpose.toLowerCase().includes(term)) ||
-        (e.message && e.message.toLowerCase().includes(term))
+        String(e.name ?? "").toLowerCase().includes(term) ||
+        String(e.email ?? "").toLowerCase().includes(term) ||
+        String(e.phone ?? "").includes(term) ||
+        String(e.country ?? "").toLowerCase().includes(term) ||
+        String(e.visaType ?? "").toLowerCase().includes(term) ||
+        String(e.purpose ?? "").toLowerCase().includes(term) ||
+        String(e.message ?? "").toLowerCase().includes(term)
       );
     }
 

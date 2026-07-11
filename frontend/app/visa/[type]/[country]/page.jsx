@@ -267,10 +267,9 @@ const countryData = {
 
 export default function CountryPage() {
   const params = useParams();
-  const type = params?.type;
-  const countrySlug = params?.country;
+  const countrySlug = typeof params?.country === "string" ? params.country : "";
   const data = countryData[countrySlug];
-  const countryName = countrySlug?.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+  const countryName = countrySlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   if (!data) {
     return (

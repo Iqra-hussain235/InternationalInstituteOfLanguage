@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { FaCheckCircle, FaArrowLeft, FaGlobe, FaUsers, FaClock, FaBoxOpen, FaUserAstronaut } from "react-icons/fa";
@@ -26,8 +26,12 @@ const OPTIONS = {
 export default function CourseDetail() {
   const router = useRouter();
   const params = useParams();
-  const courseSlug = params.slug || "";
-  const courseName = courseSlug ? courseSlug.charAt(0).toUpperCase() + courseSlug.slice(1) : "";
+  // `useParams` can temporarily be empty during prerendering/hydration. A
+  // catch-all param could also be an array, so only use a string slug.
+  const courseSlug = typeof params?.slug === "string" ? params.slug : "";
+  const courseName = courseSlug
+    ? courseSlug.charAt(0).toUpperCase() + courseSlug.slice(1)
+    : "";
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
