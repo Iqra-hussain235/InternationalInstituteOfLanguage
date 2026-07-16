@@ -13,13 +13,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const allowedOrigin = process.env.FRONTEND_URL ||"https://internationalinstituteoflanguage.onrender.com" || "http://localhost:3000";
 
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+      // Allow all origins dynamically to support dynamic deployments
+      callback(null, true);
+    },
     credentials: true
-  
   })
 );
 app.use(express.json());

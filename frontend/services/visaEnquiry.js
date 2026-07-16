@@ -1,5 +1,9 @@
+const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "https://internationalinstituteoflanguage-1.onrender.com/api")
+  .trim()
+  .replace(/\/+$/, "");
+
 export async function submitVisaEnquiry(payload, fetchImpl = fetch) {
-  const response = await fetchImpl("/api/visa", {
+  const response = await fetchImpl(`${baseUrl}/visa`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

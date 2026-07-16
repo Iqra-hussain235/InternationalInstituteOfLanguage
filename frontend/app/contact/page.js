@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import API from "@/services/api";
 
 export default function Contact() {
   const [data, setData] = useState({ name: "", email: "", message: "" });
@@ -9,7 +9,7 @@ export default function Contact() {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://localhost:5000/api/contact", data);
+      await API.post("/contact", data);
       setStatus("Thank you! Your message has been submitted.");
       setData({ name: "", email: "", message: "" });
     } catch (error) {
