@@ -31,14 +31,21 @@ export const createAcademyEnquiry = async (req, res) => {
     // Save the local export and wait for the notification attempt so failures
     // are visible in the backend logs before the request completes.
     appendAcademyEnquiryCSV(enquiry);
-    const emailSent = await sendEnquiryEmail(enquiry, true);
+    
+    // Send email asynchronously in the background so it doesn't block the HTTP response
+    sendEnquiryEmail(enquiry, true)
+      .then((emailSent) => {
+        if (!emailSent) {
+          console.warn("Academy enquiry saved but email could not be sent.");
+        }
+      })
+      .catch((err) => {
+        console.error("Background error sending academy email:", err);
+      });
 
     res.status(201).json({
       success: true,
-      message: emailSent
-        ? "Booking submitted and email notification sent."
-        : "Booking saved, but the email notification could not be sent.",
-      emailSent,
+      message: "Booking submitted successfully.",
       data: enquiry,
     });
   } catch (error) {

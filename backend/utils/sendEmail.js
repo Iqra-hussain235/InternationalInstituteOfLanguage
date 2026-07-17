@@ -23,6 +23,48 @@ const escapeHtml = (value) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 
+/**
+ * Send email using Resend API (HTTPS port 443) which is not blocked by Render free tier.
+ */
+const sendEmailViaResend = async (to, subject, html, replyTo) => {
+  try {
+    const apiKey = process.env.RESEND_API_KEY;
+    const fromEmail = process.env.RESEND_FROM || "onboarding@resend.dev";
+
+    console.log(`Attempting to send email via Resend API to: ${to}`);
+
+    const body = {
+      from: fromEmail,
+      to: [to],
+      subject: subject,
+      html: html,
+    };
+    if (replyTo) {
+      body.reply_to = replyTo;
+    }
+
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error("Resend API response error:", data);
+      return false;
+    }
+    console.log("Email sent successfully via Resend API:", data.id || data);
+    return true;
+  } catch (error) {
+    console.error("Error sending email via Resend API:", error);
+    return false;
+  }
+};
+
 export const sendEnquiryEmail = async (enquiryData, isAcademy = false) => {
   try {
     const toEmail = process.env.EMAIL_TO || process.env.EMAIL_USER || "iqratechnicl@gmail.com";
@@ -63,6 +105,10 @@ export const sendEnquiryEmail = async (enquiryData, isAcademy = false) => {
       `;
     }
 
+    if (process.env.RESEND_API_KEY) {
+      return await sendEmailViaResend(toEmail, subject, htmlContent);
+    }
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: toEmail,
@@ -99,6 +145,10 @@ export const sendVisaEnquiryEmail = async (enquiryData) => {
         <tr><td><strong>Submission Time</strong></td><td>${escapeHtml(new Date(enquiryData.submittedAt || enquiryData.createdAt || Date.now()).toLocaleString())}</td></tr>
       </table>
     `;
+
+    if (process.env.RESEND_API_KEY) {
+      return await sendEmailViaResend(toEmail, subject, htmlContent, enquiryData.email);
+    }
 
     const mailOptions = {
       from: process.env.EMAIL_USER,

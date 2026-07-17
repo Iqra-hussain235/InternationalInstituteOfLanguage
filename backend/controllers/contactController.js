@@ -27,14 +27,21 @@ export const createContact = async (req, res) => {
     });
 
     appendGeneralEnquiryCSV(contact);
-    const emailSent = await sendEnquiryEmail(contact, false);
+    
+    // Send email asynchronously in the background so it doesn't block the HTTP response
+    sendEnquiryEmail(contact, false)
+      .then((emailSent) => {
+        if (!emailSent) {
+          console.warn("Contact enquiry saved but email could not be sent.");
+        }
+      })
+      .catch((err) => {
+        console.error("Background error sending contact email:", err);
+      });
 
     res.status(201).json({
       success: true,
-      message: emailSent
-        ? "Enquiry submitted and email notification sent."
-        : "Enquiry saved, but the email notification could not be sent.",
-      emailSent,
+      message: "Enquiry submitted successfully.",
       data: contact,
     });
   } catch (error) {

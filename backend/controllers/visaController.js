@@ -57,14 +57,19 @@ export const createVisaEnquiry = async (req, res) => {
       metadata,
     });
 
-    const emailSent = await sendVisaEnquiryEmail({
+    // Send email asynchronously in the background so it doesn't block the HTTP response
+    sendVisaEnquiryEmail({
       ...enquiry.toObject(),
       submittedAt: enquiry.createdAt,
-    });
-
-    if (!emailSent) {
-      console.warn("Visa enquiry saved but email could not be sent.");
-    }
+    })
+      .then((emailSent) => {
+        if (!emailSent) {
+          console.warn("Visa enquiry saved but email could not be sent.");
+        }
+      })
+      .catch((err) => {
+        console.error("Background error sending visa email:", err);
+      });
 
     return res.status(201).json({
       success: true,
