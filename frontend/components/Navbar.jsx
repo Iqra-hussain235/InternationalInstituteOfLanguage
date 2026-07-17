@@ -100,7 +100,7 @@ export default function Navbar() {
                 International Institute
               </p>
               <p className="truncate text-base font-extrabold text-white sm:text-xl">
-                Of Language Abroad Of Study
+                Of Languages & Study Abroad
               </p>
             </div>
           </Link>
