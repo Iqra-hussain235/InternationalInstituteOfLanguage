@@ -1,50 +1,314 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Award, BookOpen, GraduationCap, HeartHandshake, Sparkles, Users } from "lucide-react";
-
-const values = [
-  { icon: HeartHandshake, title: "Student-first guidance", text: "Clear advice, honest support, and a team that stays with you at every step." },
-  { icon: BookOpen, title: "Learning that travels", text: "Practical language programmes designed for confidence beyond the classroom." },
-  { icon: Award, title: "Results with purpose", text: "Focused teaching and thoughtful preparation for each student’s next chapter." },
-];
+import { useState } from "react";
+import { MapPin, Phone, Mail, Globe, GraduationCap, Award, Users, CheckCircle, Star, Clock } from "lucide-react";
 
 export default function AboutUsPage() {
+  const [activeOffice, setActiveOffice] = useState("MORADABAD");
+
+  const offices = [
+    {
+      id: "MORADABAD",
+      name: "Moradabad",
+      address: "Main Office, Civil Lines, Moradabad, Uttar Pradesh",
+      email: "info@iilmoradabad.com",
+      phone: "+91-XXXXXXXXXX",
+      phone2: "+91-XXXXXXXXXX",
+      whatsapp: "+91-XXXXXXXXXX",
+      hours: "Mon-Sat: 9:00 AM - 6:00 PM"
+    }
+  ];
+
+  const activeOfficeData = offices.find(o => o.id === activeOffice);
+
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f8fafc] text-slate-900">
-      <section className="relative isolate overflow-hidden bg-[#071a32] px-6 pb-20 pt-10 sm:px-10 lg:px-16 lg:pb-28">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_15%_10%,rgba(41,174,225,.3),transparent_25%),radial-gradient(circle_at_85%_70%,rgba(255,95,117,.24),transparent_23%)]" />
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 text-lg font-extrabold tracking-tight text-white"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#ff4f6d] text-sm">II</span>Iqra Institute</Link>
-            <Link href="/contact" className="rounded-full border border-white/20 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white hover:text-[#071a32]">Talk to us</Link>
+    <div className="w-full bg-gradient-to-b from-slate-50 to-white min-h-screen">
+
+      {/* Hero Section */}
+      <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&h=800&fit=crop"
+          alt="About Us Banner"
+          className="w-full h-full object-cover animate-fade-in"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#071a32]/95 to-[#0a2d4d]/80" />
+        <div className="absolute inset-0 flex items-center justify-center px-6">
+          <div className="text-center max-w-4xl animate-slide-up">
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4">
+              About <span className="text-[#ff7189]">Us</span>
+            </h1>
+            <p className="text-lg md:text-xl text-slate-200">
+              Your Trusted Partner for Global Education & Immigration
+            </p>
           </div>
-          <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_.92fr]">
-            <div>
-              <p className="mb-5 flex items-center gap-2 text-sm font-bold uppercase tracking-[.2em] text-cyan-300"><Sparkles className="h-4 w-4" /> About Iqra</p>
-              <h1 className="max-w-3xl text-5xl font-black leading-[.98] tracking-tight text-white sm:text-6xl">We help ambition find its <span className="text-[#ff7189]">voice.</span></h1>
-              <p className="mt-7 max-w-xl text-lg leading-8 text-slate-300">Iqra Language Institute is a warm, modern place to build the communication skills that open doors—at university, at work, and around the world.</p>
-              <div className="mt-9 flex flex-wrap gap-4"><Link href="/academy" className="inline-flex items-center gap-2 rounded-full bg-[#ff4f6d] px-6 py-3.5 font-bold text-white shadow-lg shadow-rose-950/30 transition hover:-translate-y-0.5">Explore programmes <ArrowRight className="h-4 w-4" /></Link><Link href="/contact" className="rounded-full border border-white/25 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">Book a consultation</Link></div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+
+        {/* About Section */}
+        <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
+          <div className="animate-fade-in-left">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+              Best Immigration And Visa Consultants
+            </h2>
+            <p className="text-gray-600 leading-7 mb-4">
+              There are lots of students in India who dream of studying, working or living abroad. But it is not as easy as it seems.
+              It requires hard work and proper guidance. Today, it is a challenge for students to search for a trustworthy study visa consultant.
+              Most students are unsure whether their visa consultants are genuine or not.
+            </p>
+            <p className="text-gray-600 leading-7 mb-4">
+              Here at International Institute of Languages (IIL), we promise to provide accurate advice about study visas, work permits,
+              visitor visas, and PR related to your profile. IIL is a registered and certified immigration consultancy established in Moradabad.
+            </p>
+            <p className="text-[#0b4e80] font-semibold leading-7">
+              We have tie-ups with highly reputed professionals, colleges, and universities in Canada, Australia, New Zealand,
+              the USA/UK, Portugal, Ireland, Poland, Singapore, Cyprus, Sweden, Germany, France, and many more countries.
+            </p>
+          </div>
+          <div className="relative animate-fade-in-right">
+            <img
+              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop"
+              alt="Students"
+              className="rounded-2xl shadow-xl w-full h-[350px] object-cover hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        </div>
+
+        {/* Why Choose Us */}
+        <div className="bg-gradient-to-r from-[#0b4e80] to-[#0a2d4d] rounded-3xl p-8 md:p-12 mb-12 animate-fade-in-up">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+            Why Choose IIL?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/20 transition">
+              <CheckCircle className="h-12 w-12 text-[#ff7189] mx-auto mb-4" />
+              <h3 className="text-white font-bold text-lg mb-2">Certified Consultants</h3>
+              <p className="text-slate-200 text-sm">Registered and certified immigration consultancy with proven track record</p>
             </div>
-            <div className="relative mx-auto w-full max-w-md">
-              <div className="absolute -inset-4 rotate-6 rounded-[2rem] border border-white/10 bg-white/5" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-slate-800 shadow-2xl"><Image src="/class1.jpeg" alt="Students learning together" width={800} height={600} className="h-[370px] w-full object-cover" priority /><div className="absolute bottom-5 left-5 rounded-2xl bg-white p-4 shadow-xl"><p className="text-2xl font-black text-[#071a32]">Your future,</p><p className="font-semibold text-[#ff4f6d]">spoken with confidence.</p></div></div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/20 transition">
+              <Globe className="h-12 w-12 text-[#ff7189] mx-auto mb-4" />
+              <h3 className="text-white font-bold text-lg mb-2">Global Network</h3>
+              <p className="text-slate-200 text-sm">Partnerships with top universities across 20+ countries worldwide</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/20 transition">
+              <Users className="h-12 w-12 text-[#ff7189] mx-auto mb-4" />
+              <h3 className="text-white font-bold text-lg mb-2">Expert Team</h3>
+              <p className="text-slate-200 text-sm">Dedicated counsellors with years of field experience</p>
             </div>
           </div>
         </div>
-      </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-16 sm:px-10 lg:grid-cols-3 lg:px-16">
-        {[['10+', 'Years of guidance'], ['1,000+', 'Students supported'], ['1', 'Big belief in you']].map(([number, label]) => <div key={label} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm"><p className="text-4xl font-black text-[#0b4e80]">{number}</p><p className="mt-1 font-medium text-slate-500">{label}</p></div>)}
-      </section>
+        {/* Coaching Section */}
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-8 text-center animate-fade-in">
+            Our Language Coaching Programs
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="animate-fade-in-left">
+              <div className="flex flex-wrap gap-3 mb-6">
+                <span className="bg-[#0b4e80] text-white px-4 py-2 rounded-full text-sm font-semibold">IELTS</span>
+                <span className="bg-[#ff4f6d] text-white px-4 py-2 rounded-full text-sm font-semibold">PTE</span>
+                <span className="bg-[#0b8393] text-white px-4 py-2 rounded-full text-sm font-semibold">TOEFL</span>
+                <span className="bg-[#ff7189] text-white px-4 py-2 rounded-full text-sm font-semibold">Spoken English</span>
+              </div>
+              <p className="text-gray-600 leading-7 mb-4">
+                IIL has centres in Moradabad to prepare you for the language ability tests. Our IELTS, PTE, and spoken English trainers
+                possess incomparable expertise and teaching skills. We have a team of IDP and British Council-certified faculty.
+              </p>
+              <p className="text-gray-600 leading-7 mb-4">
+                We have designed the curriculum and followed the teaching techniques that are suitable for every student.
+                We offer online and offline coaching, allowing them to get the desired band score.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Star className="h-5 w-5 text-[#ff7189]" />
+                  <span className="text-gray-700">Extra grammar improvement classes</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Star className="h-5 w-5 text-[#ff7189]" />
+                  <span className="text-gray-700">Multimedia classes with modern facilities</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Star className="h-5 w-5 text-[#ff7189]" />
+                  <span className="text-gray-700">Up-to-date library of study material</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Star className="h-5 w-5 text-[#ff7189]" />
+                  <span className="text-gray-700">Weekly mock tests for practice analysis</span>
+                </div>
+              </div>
+            </div>
+            <div className="relative animate-fade-in-right">
+              <img
+                src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=600&fit=crop"
+                alt="Classroom"
+                className="rounded-2xl shadow-xl w-full h-[350px] object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          </div>
+        </div>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-10 sm:px-10 lg:grid-cols-2 lg:px-16 lg:py-20">
-        <div className="rounded-[2rem] bg-[#dff5fa] p-8 sm:p-12"><p className="text-sm font-bold uppercase tracking-[.18em] text-[#0b7295]">Our story</p><h2 className="mt-4 text-4xl font-black leading-tight text-[#071a32]">More than lessons. A launchpad.</h2><p className="mt-6 leading-8 text-slate-600">Every learner arrives with a different goal. We pair capable teachers with encouraging mentorship so that goal feels achievable, personal, and exciting.</p><div className="mt-8 flex items-center gap-3 font-bold text-[#0b4e80]"><GraduationCap className="h-7 w-7" /> Learn boldly. Go further.</div></div>
-        <div className="grid gap-4">{values.map(({ icon: Icon, title, text }) => <article key={title} className="group flex gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-rose-50 text-[#ff4f6d]"><Icon className="h-6 w-6" /></div><div><h3 className="text-lg font-extrabold">{title}</h3><p className="mt-1 text-sm leading-6 text-slate-500">{text}</p></div></article>)}</div>
-      </section>
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-slate-100 hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in">
+            <GraduationCap className="h-10 w-10 text-[#0b4e80] mx-auto mb-3" />
+            <h3 className="text-3xl font-bold text-slate-900">5000+</h3>
+            <p className="text-gray-600 text-sm">Students Placed</p>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-slate-100 hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            <Globe className="h-10 w-10 text-[#ff4f6d] mx-auto mb-3" />
+            <h3 className="text-3xl font-bold text-slate-900">20+</h3>
+            <p className="text-gray-600 text-sm">Countries</p>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-slate-100 hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <Users className="h-10 w-10 text-[#0b8393] mx-auto mb-3" />
+            <h3 className="text-3xl font-bold text-slate-900">50+</h3>
+            <p className="text-gray-600 text-sm">Expert Trainers</p>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-slate-100 hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <Award className="h-10 w-10 text-[#ff7189] mx-auto mb-3" />
+            <h3 className="text-3xl font-bold text-slate-900">98%</h3>
+            <p className="text-gray-600 text-sm">Success Rate</p>
+          </div>
+        </div>
 
-      <section className="mx-6 mb-16 rounded-[2rem] bg-[#ff4f6d] px-7 py-12 text-center text-white sm:mx-10 lg:mx-16"><Users className="mx-auto h-8 w-8" /><h2 className="mt-4 text-3xl font-black">Let’s make your next step feel possible.</h2><p className="mx-auto mt-3 max-w-xl text-rose-100">Meet the people who will listen, guide, and cheer you on.</p><Link href="/contact" className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-bold text-[#d93555] transition hover:scale-105">Start a conversation <ArrowRight className="h-4 w-4" /></Link></section>
-    </main>
+        {/* Offices Section */}
+        <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-3xl p-8 md:p-12 animate-fade-in-up">
+          <div className="text-center mb-10">
+            <p className="text-[#0b4e80] font-semibold text-lg mb-2">
+              We are Professional Experts in Immigration Visa
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+              Our Offices
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Office Selector */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="bg-[#0b4e80] text-white px-6 py-4 font-bold">
+                Select Office
+              </div>
+              <div className="p-4">
+                {offices.map((office) => (
+                  <button
+                    key={office.id}
+                    onClick={() => setActiveOffice(office.id)}
+                    className={`w-full text-left px-4 py-3 rounded-xl mb-2 font-semibold transition-all ${
+                      activeOffice === office.id
+                        ? "bg-[#0b4e80] text-white"
+                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    }`}
+                  >
+                    {office.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Office Details */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 md:col-span-2">
+              {activeOfficeData && (
+                <>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <MapPin className="h-6 w-6 text-[#ff7189]" />
+                    {activeOfficeData.name} Office
+                  </h3>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <MapPin className="h-5 w-5 text-[#0b4e80] mt-1 shrink-0" />
+                        <span className="text-gray-700">{activeOfficeData.address}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Clock className="h-5 w-5 text-[#0b4e80]" />
+                        <span className="text-gray-700">{activeOfficeData.hours}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <Mail className="h-5 w-5 text-[#0b4e80]" />
+                        <a href={`mailto:${activeOfficeData.email}`} className="text-[#0b4e80] hover:underline">
+                          {activeOfficeData.email}
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Phone className="h-5 w-5 text-[#0b4e80]" />
+                        <a href={`tel:${activeOfficeData.phone}`} className="text-gray-700">
+                          {activeOfficeData.phone}
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Globe className="h-5 w-5 text-green-500" />
+                        <a href={`https://wa.me/${activeOfficeData.whatsapp.replace(/[^0-9]/g, '')}`} className="text-green-600 hover:underline">
+                          WhatsApp: {activeOfficeData.whatsapp}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Map */}
+                  <div className="mt-6 rounded-2xl overflow-hidden shadow-lg">
+                    <iframe
+                      src="https://www.google.com/maps?q=Moradabad&output=embed"
+                      width="100%"
+                      height="250"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slide-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fade-in-left {
+          from { opacity: 0; transform: translateX(-20px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fade-in-right {
+          from { opacity: 0; transform: translateX(20px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+        .animate-slide-up {
+          animation: slide-up 0.8s ease-out;
+        }
+        .animate-fade-in-left {
+          animation: fade-in-left 0.8s ease-out;
+        }
+        .animate-fade-in-right {
+          animation: fade-in-right 0.8s ease-out;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out;
+        }
+      `}</style>
+
+    </div>
   );
 }

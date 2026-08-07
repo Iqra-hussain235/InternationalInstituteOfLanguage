@@ -8,12 +8,18 @@ import { FiMenu, FiX, FiChevronDown } from "react-icons/fi";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/about/aboutUs", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/academy/course", label: "Courses" },
   { href: "/events", label: "Event" },
   { href: "/contact", label: "Contact" },
 ];
+
+const aboutItems = [
+  { key: "aboutUs", label: "About Us", href: "/about/aboutUs" },
+  { key: "branches", label: "Branches", href: "/about/branches" },
+  { key: "socialMedia", label: "Social Media", href: "/about/socialMedia" },
+];
+
 const visaItems = [
   { key: "study", label: "Study Visa" },
   { key: "visitor", label: "Visitor Visa" },
@@ -29,13 +35,17 @@ const VISA_CLOSE_DELAY_MS = 180;
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [visaMenuOpen, setVisaMenuOpen] = useState(false);
+  const [aboutMenuOpen, setAboutMenuOpen] = useState(false);
   const [mobileVisaOpen, setMobileVisaOpen] = useState(false);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const pathname = usePathname();
   const visaCloseTimeoutRef = useRef(null);
+  const aboutCloseTimeoutRef = useRef(null);
 
   const closeMenu = useCallback(() => {
     setMenuOpen(false);
     setMobileVisaOpen(false);
+    setMobileAboutOpen(false);
   }, []);
 
   const openVisaMenu = useCallback(() => {
@@ -53,6 +63,21 @@ export default function Navbar() {
     }, VISA_CLOSE_DELAY_MS);
   }, []);
 
+  const openAboutMenu = useCallback(() => {
+    if (aboutCloseTimeoutRef.current) {
+      clearTimeout(aboutCloseTimeoutRef.current);
+      aboutCloseTimeoutRef.current = null;
+    }
+    setAboutMenuOpen(true);
+  }, []);
+
+  const closeAboutMenu = useCallback(() => {
+    aboutCloseTimeoutRef.current = setTimeout(() => {
+      setAboutMenuOpen(false);
+      aboutCloseTimeoutRef.current = null;
+    }, VISA_CLOSE_DELAY_MS);
+  }, []);
+
   useEffect(() => {
     closeMenu();
   }, [pathname, closeMenu]);
@@ -60,6 +85,7 @@ export default function Navbar() {
   useEffect(() => {
     return () => {
       if (visaCloseTimeoutRef.current) clearTimeout(visaCloseTimeoutRef.current);
+      if (aboutCloseTimeoutRef.current) clearTimeout(aboutCloseTimeoutRef.current);
     };
   }, []);
 
@@ -112,16 +138,50 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`transition hover:text-red-300 ${
-                  (link.href.startsWith("/about")
-                    ? pathname.startsWith("/about")
-                    : pathname === link.href)
-                    ? "text-red-300"
-                    : ""
+                  pathname === link.href ? "text-red-300" : ""
                 }`}
               >
                 {link.label}
               </Link>
             ))}
+            <div
+              className="relative"
+              onMouseEnter={openAboutMenu}
+              onMouseLeave={closeAboutMenu}
+            >
+              <Link
+                href="/about/aboutUs"
+                className={`transition hover:text-red-300 ${
+                  pathname.startsWith("/about") ? "text-red-300" : ""
+                }`}
+              >
+                About
+              </Link>
+
+              <AnimatePresence>
+                {aboutMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                    className="absolute left-0 top-full z-50 pt-2"
+                  >
+                    <div className="w-56 overflow-hidden rounded-3xl border border-white/10 bg-[#0F4C81]/95 p-2 shadow-2xl shadow-slate-950/20">
+                      {aboutItems.map((item) => (
+                        <Link
+                          key={item.key}
+                          href={item.href}
+                          className="block rounded-2xl px-4 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:text-red-300"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <div
               className="relative"
               onMouseEnter={openVisaMenu}
@@ -239,11 +299,7 @@ export default function Navbar() {
                       href={link.href}
                       onClick={closeMenu}
                       className={`block rounded-xl px-4 py-3.5 text-base font-semibold transition hover:bg-white/10 ${
-                        (link.href.startsWith("/about")
-                          ? pathname.startsWith("/about")
-                          : pathname === link.href)
-                          ? "bg-white/10 text-red-300"
-                          : "text-white/90"
+                        pathname === link.href ? "bg-white/10 text-red-300" : "text-white/90"
                       }`}
                     >
                       {link.label}
@@ -255,6 +311,72 @@ export default function Navbar() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: NAV_LINKS.length * 0.05 }}
+                >
+                  <div
+                    className={`rounded-xl transition hover:bg-white/10 ${
+                      pathname.startsWith("/about") ? "bg-white/10" : ""
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <Link
+                        href="/about/aboutUs"
+                        onClick={closeMenu}
+                        className={`flex-1 rounded-xl px-4 py-3.5 text-base font-semibold transition hover:text-red-300 ${
+                          pathname.startsWith("/about") ? "text-red-300" : "text-white/90"
+                        }`}
+                      >
+                        About
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setMobileAboutOpen((prev) => !prev)}
+                        aria-label={mobileAboutOpen ? "Collapse about menu" : "Expand about menu"}
+                        aria-expanded={mobileAboutOpen}
+                        className="mr-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/90 transition hover:bg-white/10 hover:text-red-300"
+                      >
+                        <FiChevronDown
+                          className={`h-5 w-5 transition-transform duration-200 ${
+                            mobileAboutOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+
+                    <AnimatePresence initial={false}>
+                      {mobileAboutOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <div className="space-y-0.5 px-2 pb-2 pt-0.5">
+                            {aboutItems.map((item) => (
+                              <Link
+                                key={item.key}
+                                href={item.href}
+                                onClick={closeMenu}
+                                className={`block rounded-xl px-4 py-2.5 pl-6 text-sm font-semibold transition hover:bg-white/10 hover:text-red-300 ${
+                                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                                    ? "text-red-300"
+                                    : "text-white/80"
+                                }`}
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: (NAV_LINKS.length + 1) * 0.05 }}
                 >
                   <div
                     className={`rounded-xl transition hover:bg-white/10 ${
