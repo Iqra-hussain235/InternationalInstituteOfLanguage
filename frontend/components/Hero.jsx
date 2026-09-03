@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 
@@ -12,46 +13,128 @@ import "swiper/css/effect-fade";
 
 const slideData = [
   {
-    title: "Study & Immigration Services",
-    subtitle: "Trusted global guidance for study abroad, visa, and language pathways.",
-    description: "International Institute Of Language helps students secure admissions, visa approvals, and career-ready language training.",
-    image: "/Studyabroad.png",
+    type: "imagePair",
+    title: "Meet Our Director & Expert Trainer",
+    subtitle: "Guided by industry-certified IELTS trainers and academic experts.",
+    description: "Our director personally oversees every student's journey — from counselling to visa success.",
+    images: ["/IMG_5745.JPG.jpeg"],
+    imageLabel: "Director & Expert Trainer",
+    imageSubLabel: "Maaz Khan — IIL Founder",
     buttonText: "Enquiry Now",
+    link: "/academy/course",
   },
   {
+    type: "imagePair",
+    title: "Meet Our English & German Trainer",
+    subtitle: "Certified in English Speaking and German Language teaching.",
+    description: "Our expert trainer brings hands-on expertise, personalized coaching, and proven strategies to help you achieve fluency and confidence.",
+    images: ["/23_image.png"],
+    imageLabel: "Expert Trainer",
+    imageSubLabel: "English Speaking & German Language",
+    buttonText: "Enquiry Now",
+    link: "/academy/course",
+  },
+  {
+    type: "imagePair",
+    title: "Meet Our French Trainer",
+    subtitle: "Learn French from a certified language expert with real-world fluency.",
+    description: "Our French trainer helps students master conversational and academic French with proven teaching techniques.",
+    images: ["/24_image.png"],
+    imageLabel: "French Trainer",
+    imageSubLabel: "Certified Language Coach",
+    buttonText: "Enquiry Now",
+    link: "/academy/course",
+  },
+  {
+    type: "imagePair",
+    title: "Meet Our English Trainer",
+    subtitle: "Certified IELTS and spoken English coach with years of teaching experience.",
+    description: "Our English trainer focuses on building confidence, fluency, and exam-ready skills for every student.",
+    images: ["/24_image.png"],
+    imageLabel: "English Trainer",
+    imageSubLabel: "Certified IELTS Coach",
+    buttonText: "Enquiry Now",
+    link: "/academy/course",
+  },
+  {
+    type: "imagePair",
+    title: "Meet Our Faculty Team",
+    subtitle: "A dedicated team of trainers guiding every student toward success.",
+    description: "Our experienced faculty works together to deliver quality training, mentorship, and career-ready guidance to every student.",
+    images: ["/19_image.png"],
+    imageLabel: "Our Faculty Team",
+    imageSubLabel: "Certified Trainers & Mentors",
+    buttonText: "Enquiry Now",
+    link: "/academy/course",
+  },
+  {
+    type: "image",
     title: "Free Live Master Class",
     subtitle: "IELTS, PTE, TOEFL, and spoken English preparation with industry experts.",
     description: "Fast-track your band score with dynamic coaching, live practice, and detailed feedback.",
     image: "/class1.jpeg",
     buttonText: "Explore Our Courses",
+    link: "/academy/course",
   },
   {
+    type: "image",
     title: "Visa & Admission Support",
     subtitle: "End-to-end student visa processing and documentation support.",
     description: "Applicants receive personalized consultation, SOP drafting, and embassy-ready application management.",
     image: "/class2.jpeg",
     buttonText: "Start Your Enquiry",
+    link: "/academy/course",
   },
 ];
 
+function ImageFadePair({ images, title, imageLabel, imageSubLabel }) {
+  const img = images[0];
+  const label = imageLabel || "Director & Expert Trainer";
+  const subLabel = imageSubLabel || "";
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      className="relative mx-auto w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[380px]"
+    >
+      <div className="absolute -inset-3 rounded-[1.8rem] bg-blue-500/15 blur-xl" />
+      <div className="absolute -inset-1 rounded-[1.6rem] bg-blue-400/10 blur-md" />
+
+      <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(59,130,246,0.15)] bg-slate-900">
+        
+        <div className="h-[240px] sm:h-[270px] flex items-center justify-center p-3 bg-slate-800/50">
+          <img
+            src={img}
+            alt={title}
+            className="max-w-full max-h-full object-contain rounded-lg"
+          />
+        </div>
+        
+        <div className="p-5 bg-gradient-to-t from-slate-900 via-slate-900 to-slate-800 border-t border-white/5">
+          <div className="h-1 w-10 bg-blue-500 rounded-full mb-2" />
+          <p className="text-white font-bold text-base">{label}</p>
+          {subLabel && (
+            <p className="text-blue-300 text-xs mt-1">{subLabel}</p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Hero() {
   return (
-    <section className="relative w-full bg-[#0a0f1c] overflow-hidden">
-      {/* Ambient background glows */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[120px]" />
-        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[50%] rounded-full bg-indigo-600/10 blur-[120px]" />
-        <div className="absolute -bottom-[20%] left-[20%] w-[50%] h-[50%] rounded-full bg-violet-600/10 blur-[120px]" />
-      </div>
-
+    <section className="relative w-full overflow-hidden">
       <Swiper
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         effect="fade"
         fadeEffect={{ crossFade: true }}
-        speed={1000}
+        speed={700}
         navigation
         pagination={{ clickable: true, dynamicBullets: true }}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
         loop={true}
         autoHeight={true}
         style={{
@@ -61,71 +144,106 @@ export default function Hero() {
           "--swiper-pagination-bullet-inactive-opacity": "0.3",
           "--swiper-navigation-size": "24px",
         }}
-        className="w-full"
+        className="w-full relative z-10"
       >
         {slideData.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative w-full flex items-center justify-center px-6 py-20 sm:p-12 lg:px-24 min-h-[100vh] lg:min-h-[calc(100vh-4rem)] xl:min-h-[700px]">
+          <SwiperSlide
+            key={index}
+            data-swiper-autoplay={slide.autoplayDelay || undefined}
+          >
+            <div className="relative w-full flex items-center justify-center px-6 pt-5 pb-8 sm:pt-6 sm:pb-10 lg:px-24 lg:pt-6 lg:pb-10 min-h-[400px] lg:min-h-[440px]">
+              <div className="relative z-10 w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
-              <div className="relative z-10 w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-col justify-center max-w-2xl text-center lg:text-left mx-auto lg:mx-0 order-2 lg:order-1 pt-4 lg:pt-0"
+                >
+                  <motion.span
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.6 }}
+                    className="inline-block w-fit mx-auto lg:mx-0 bg-blue-900/40 border border-blue-500/30 text-blue-300 px-4 py-1 rounded-full text-sm mb-4"
+                  >
+                    ★ YOUR DREAM. OUR GUIDANCE. GLOBAL SUCCESS.
+                  </motion.span>
 
-                {/* Text Content */}
-                <div className="flex flex-col justify-center max-w-2xl text-center lg:text-left mx-auto lg:mx-0 order-2 lg:order-1 pt-6 lg:pt-0">
-
-
-                  <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.15] drop-shadow-sm">
+                  <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25, duration: 0.7 }}
+                    className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl font-extrabold tracking-tight text-white leading-[1.15] drop-shadow-sm"
+                  >
                     {slide.title}
-                  </h1>
+                  </motion.h1>
 
-                  <p className="mt-6 text-lg sm:text-xl font-medium text-slate-200">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35, duration: 0.7 }}
+                    className="mt-3 text-base sm:text-lg font-medium text-slate-200"
+                  >
                     {slide.subtitle}
-                  </p>
+                  </motion.p>
 
-                  <p className="mt-4 text-base sm:text-lg text-slate-400 leading-relaxed font-light">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.45, duration: 0.7 }}
+                    className="mt-2 text-sm sm:text-base text-slate-400 leading-relaxed font-light"
+                  >
                     {slide.description}
-                  </p>
+                  </motion.p>
 
-                  <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.55, duration: 0.7 }}
+                    className="mt-5 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                  >
                     <Link
-                      href="/academy/course"
-                      className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-blue-600 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all duration-300"
+                      href={slide.link}
+                      className="group inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-blue-600 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all duration-300 hover:scale-105"
                     >
                       {slide.buttonText}
                       <svg className="w-5 h-5 ml-2 -mr-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
                     </Link>
-                    {/* <Link
-                      href="/contact"
-                      className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
-                    >
-                      Contact Team
-                    </Link> */}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
-                {/* Image Content */}
-                <div className="relative group mx-auto w-full max-w-md sm:max-w-lg lg:max-w-xl order-1 lg:order-2 mt-8 lg:mt-0">
-                  {/* Decorative glow behind image */}
-                  <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/30 via-transparent to-indigo-500/30 rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700" />
-
-                  <div className="relative aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3] w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-slate-900/50 backdrop-blur-sm">
-                    {/* Dark gradient overlay on bottom for depth */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1c] via-[#0a0f1c]/20 to-transparent z-10 pointer-events-none opacity-90" />
-                    {/* Subtle colored overlay for consistent blending */}
-                    <div className="absolute inset-0 bg-blue-900/20 mix-blend-overlay z-10 pointer-events-none" />
-
-                    <Image
-                      src={slide.image}
-                      alt={slide.title}
-                      fill
-                      priority={true}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover object-center transform transition-transform duration-[2000ms] ease-out group-hover:scale-110 will-change-transform"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  className="order-1 lg:order-2 flex items-center justify-center"
+                >
+                  {slide.type === "imagePair" ? (
+                    <ImageFadePair 
+                      images={slide.images} 
+                      title={slide.title} 
+                      imageLabel={slide.imageLabel}
+                      imageSubLabel={slide.imageSubLabel}
                     />
-                  </div>
-                </div>
+                  ) : (
+                    <div className="relative group mx-auto w-full max-w-sm sm:max-w-md lg:max-w-lg">
+                      <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/30 via-transparent to-indigo-500/30 rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700" />
 
+                      <div className="relative aspect-[4/3] w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-slate-900/50 backdrop-blur-sm">
+                        <Image
+                          src={slide.image}
+                          alt={slide.title}
+                          fill
+                          priority={true}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover object-center transform transition-transform duration-[2000ms] ease-out group-hover:scale-110 will-change-transform"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
               </div>
             </div>
           </SwiperSlide>
