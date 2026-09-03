@@ -144,7 +144,7 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div
+            {/* <div
               className="relative"
               onMouseEnter={openAboutMenu}
               onMouseLeave={closeAboutMenu}
@@ -181,7 +181,17 @@ export default function Navbar() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </div> */}
+
+            <Link
+              href="/about"
+              className={`transition hover:text-red-300 ${
+                pathname.startsWith("/about") ? "text-red-300" : ""
+              }`}
+            >
+              About
+            </Link>
+
             <div
               className="relative"
               onMouseEnter={openVisaMenu}
@@ -307,7 +317,7 @@ export default function Navbar() {
                   </motion.div>
                 ))}
 
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: NAV_LINKS.length * 0.05 }}
@@ -438,8 +448,24 @@ export default function Navbar() {
                       )}
                     </AnimatePresence>
                   </div>
-                </motion.div>
+                </motion.div> */}
               </nav>
+
+                 <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: NAV_LINKS.length * 0.05 }}
+                >
+                  <Link
+                    href="/about"
+                    onClick={closeMenu}
+                    className={`block rounded-xl px-4 py-3.5 text-base font-semibold transition hover:bg-white/10 ${
+                      pathname.startsWith("/about") ? "bg-white/10 text-red-300" : "text-white/90"
+                    }`}
+                  >
+                    About
+                  </Link>
+                </motion.div>
 
               <div className="border-t border-white/10 p-5">
                 <Link
